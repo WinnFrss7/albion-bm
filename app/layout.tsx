@@ -6,9 +6,8 @@ const _geist = Geist({ subsets: ['latin'] })
 const _geistMono = Geist_Mono({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'Albion Black Market - Item Finder',
-  description: 'Find items by tier, slot type, and enchantment level for Albion Online',
-  generator: 'v0.app',
+  title: 'AO-Black Market',
+  description: 'Get Profit With AO Black Market By Lbot',
 }
 
 export default function RootLayout({
