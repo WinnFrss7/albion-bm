@@ -1,16 +1,20 @@
-// app/page.jsx (Server Component - NO "use client")
-import clientPromise from '@/lib/mongodb';
+// app/page.jsx
 import ItemBrowser from '@/components/ItemBrowser';
 
 async function getRecords() {
-  const client = await clientPromise;
-  const db = client.db('albion');
-  const records = await db.collection('blackmarket').find({}).toArray();
-  return JSON.parse(JSON.stringify(records));
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/blackmarket`,
+    { cache: 'no-store' }
+  );
+
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+
+  return res.json();
 }
 
 export default async function Page() {
   const itemsData = await getRecords();
-  
   return <ItemBrowser itemsData={itemsData} />;
 }
