@@ -118,6 +118,21 @@ export default function ItemBrowser({ itemsData }) {
           onClose={() => setSelectedItem(null)}
         />
       )}
+
+      <footer className="mt-12 pb-8 text-center">
+        <p className="text-slate-500 text-sm">
+          Powered by{' '}
+          <a
+            href="https://github.com/WinnFrss7"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+          >
+            @Lbot
+          </a>
+          -2026
+        </p>
+      </footer>
     </main>
   )
 }
