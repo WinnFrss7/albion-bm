@@ -190,6 +190,14 @@ export default function ItemModal({ item, onClose }) {
                       </div>
 
                       <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
+                        <span className="text-sm text-slate-300">Market Tax (10%)</span>
+                        <span className="text-base font-bold text-red-400">
+                          -{displayItem.craftingProfit.marketTax.toLocaleString()}
+                          <span className="text-xs text-slate-400 ml-1">silver</span>
+                        </span>
+                      </div>
+
+                      <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
                         <span className="text-sm text-slate-300">Return Value</span>
                         <span className="text-base font-bold text-cyan-400">
                           +{displayItem.craftingProfit.returnValue.toLocaleString()}

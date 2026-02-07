@@ -88,7 +88,7 @@ console.log(url)
 function calculateAveragePrice(historyData) {
   if (!historyData || historyData.length === 0) return null;
 
-  const sum = historyData.reduce((acc, d) => acc + d.avg_price, 0);
-  return Math.round(sum / historyData.length);
+  const lastFive = historyData.slice(-5);
+  const sum = lastFive.reduce((acc, d) => acc + d.avg_price, 0);
+  return Math.round(sum / lastFive.length);
 }
-

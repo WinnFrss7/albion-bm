@@ -31,6 +31,7 @@ export function calculateCraftingProfit(item, returnRate = 0.248) {
         itemPrice: item.price,
         totalCraftCost: null,
         returnValue: null,
+        marketTax: null,
         profit: null
       };
     }
@@ -54,16 +55,18 @@ export function calculateCraftingProfit(item, returnRate = 0.248) {
   }
 
   // ===============================
-  // 3. Calculate return & profit
+  // 3. Calculate return, tax & profit
   // ===============================
   const returnValue = returnBaseCost * returnRate;
-  const profit = item.price - totalCost + returnValue;
+  const marketTax = item.price * 0.10;
+  const profit = item.price - totalCost + returnValue - marketTax;
 
   return {
     itemName: item.UniqueName,
     itemPrice: item.price,
     totalCraftCost: Math.round(totalCost),
     returnValue: Math.round(returnValue),
+    marketTax: Math.round(marketTax),
     profit: Math.round(profit)
   };
 }

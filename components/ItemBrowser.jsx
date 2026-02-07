@@ -8,7 +8,7 @@ import ItemModal from '@/components/ItemModal'
 export default function ItemBrowser({ itemsData }) {
   const [selectedSlotType, setSelectedSlotType] = useState('armor')
   const [selectedName, setSelectedName] = useState('')
-  const [selectedTier, setSelectedTier] = useState('')
+  const [selectedTier, setSelectedTier] = useState('T4')
   const [selectedEnchantment, setSelectedEnchantment] = useState('')
   const [selectedItem, setSelectedItem] = useState(null)
 
