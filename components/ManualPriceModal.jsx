@@ -20,8 +20,13 @@ export default function ManualPriceModal({ item, currentPrices, onClose, onSubmi
     })
     return initial
   })
+  // Store as decimal (0.248), display as percentage (24.8)
   const [returnRate, setReturnRate] = useState(
     currentPrices?.returnRate ?? 0.248
+  )
+  // Separate display state for the input field
+  const [returnRateDisplay, setReturnRateDisplay] = useState(
+    ((currentPrices?.returnRate ?? 0.248) * 100).toFixed(1)
   )
 
   const handleResourcePriceChange = (uniqueName, value) => {
@@ -32,6 +37,28 @@ export default function ManualPriceModal({ item, currentPrices, onClose, onSubmi
     }))
   }
 
+  const handleReturnRateChange = (value) => {
+    // Update display state immediately for smooth typing
+    setReturnRateDisplay(value)
+    
+    // Allow empty string for editing
+    if (value === '') {
+      setReturnRate(0)
+      return
+    }
+    
+    // Convert percentage input to decimal (e.g., 24.8 -> 0.248)
+    const percentage = parseFloat(value)
+    if (isNaN(percentage)) {
+      return // Don't update if invalid
+    }
+    
+    const decimal = percentage / 100
+    // Clamp between 0 and 1
+    const clamped = Math.max(0, Math.min(1, decimal))
+    setReturnRate(clamped)
+  }
+
   const handleReset = () => {
     setItemPrice(item.price ?? 0)
     const reset = {}
@@ -40,13 +67,14 @@ export default function ManualPriceModal({ item, currentPrices, onClose, onSubmi
     })
     setResourcePrices(reset)
     setReturnRate(0.248)
+    setReturnRateDisplay('24.8')
   }
 
   const handleSubmit = () => {
     onSubmit({
       itemPrice: parseFloat(itemPrice) || 0,
       resources: resourcePrices,
-      returnRate: parseFloat(returnRate) || 0.248
+      returnRate: returnRate
     })
   }
 
@@ -96,30 +124,41 @@ export default function ManualPriceModal({ item, currentPrices, onClose, onSubmi
             </div>
 
             {/* RETURN RATE */}
-            <div className="bg-slate-800/50 rounded-xl p-5 border border-slate-700">
+            <div className="bg-gradient-to-br from-cyan-900/20 to-slate-800/50 rounded-xl p-5 border border-cyan-700/30">
               <h4 className="text-sm font-bold text-cyan-400 mb-4 flex items-center gap-2">
                 <span className="w-1 h-4 bg-cyan-400 rounded"></span>
                 Return Rate
               </h4>
               <div className="space-y-2">
                 <Label htmlFor="return-rate" className="text-slate-300 text-sm">
-                  Resource Return Rate (0-1)
+                  Resource Return Rate
                 </Label>
                 <div className="relative">
                   <Input
                     id="return-rate"
-                    type="number"
-                    value={returnRate}
-                    onChange={(e) => setReturnRate(e.target.value)}
-                    className="bg-slate-800 border-slate-700 text-white focus:border-cyan-500"
-                    placeholder="0.248"
-                    min="0"
-                    max="1"
-                    step="0.001"
+                    type="text"
+                    inputMode="decimal"
+                    value={returnRateDisplay}
+                    onChange={(e) => handleReturnRateChange(e.target.value)}
+                    className="bg-slate-800 border-slate-700 text-white pr-12 focus:border-cyan-500"
+                    placeholder="24.8"
                   />
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-medium">
+                    %
+                  </span>
                 </div>
-                <p className="text-xs text-slate-500">
-                  Default: 0.248 (24.8% return on non-artifact resources)
+                <div className="bg-slate-800/50 rounded-lg p-3 mt-3">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span className="text-slate-400">Current Return Rate:</span>
+                    <span className="text-cyan-400 font-medium">{(returnRate * 100).toFixed(1)}%</span>
+                  </div>
+                  <div className="flex justify-between text-xs">
+                    <span className="text-slate-400">Decimal Value:</span>
+                    <span className="text-slate-300 font-mono">{returnRate.toFixed(3)}</span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-500 mt-2">
+                  Default: 24.8% (Based on resource return mechanics for non-artifact items)
                 </p>
               </div>
             </div>

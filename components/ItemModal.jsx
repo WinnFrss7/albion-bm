@@ -15,7 +15,7 @@ export default function ItemModal({ item, onClose }) {
   const [showPriceModal, setShowPriceModal] = useState(false)
   const [manualPrices, setManualPrices] = useState(null)
   const [isManualCalculation, setIsManualCalculation] = useState(false)
-
+  console.log(item)
   const handleImageError = (uniqueName) => {
     setImageErrors((prev) => new Set(prev).add(uniqueName))
   }
@@ -66,11 +66,15 @@ export default function ItemModal({ item, onClose }) {
     const newProfit = calculateCraftingProfit(modifiedItem, manualPrices.returnRate)
     return {
       ...modifiedItem,
-      craftingProfit: newProfit
+      craftingProfit: newProfit,
+      returnRate: manualPrices.returnRate
     }
   }
 
   const displayItem = getDisplayItem()
+  
+  // Get the return rate to display (from manual prices or default)
+  const currentReturnRate = manualPrices?.returnRate ?? 0.248
 
   return (
   <>
@@ -198,7 +202,12 @@ export default function ItemModal({ item, onClose }) {
                       </div>
 
                       <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
-                        <span className="text-sm text-slate-300">Return Value</span>
+                        <div className="flex flex-col">
+                          <span className="text-sm text-slate-300">Return Value</span>
+                          <span className="text-xs text-cyan-300/70">
+                            ({(currentReturnRate * 100).toFixed(1)}% return rate)
+                          </span>
+                        </div>
                         <span className="text-base font-bold text-cyan-400">
                           +{displayItem.craftingProfit.returnValue.toLocaleString()}
                           <span className="text-xs text-slate-400 ml-1">silver</span>
