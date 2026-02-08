@@ -5,6 +5,7 @@ import Image from 'next/image'
 import ItemGrid from '@/components/ItemGrid'
 import FilterBar from '@/components/FilterBar'
 import ItemModal from '@/components/ItemModal'
+import ServerSelector from '@/components/ServerSelector'
 
 export default function ItemBrowser({ itemsData }) {
   const [selectedSlotType, setSelectedSlotType] = useState('armor')
@@ -94,7 +95,7 @@ export default function ItemBrowser({ itemsData }) {
               className="rounded-lg"
               priority
             />
-            <div>
+            <div className="flex-1">
               <h1 className="text-4xl font-bold text-white mb-2">Albion Black Market</h1>
               <p className="text-slate-400">
                 Black Market Profit Finder Tool Powered By{' '}
@@ -107,6 +108,11 @@ export default function ItemBrowser({ itemsData }) {
                   @Lbot
                 </a>
               </p>
+            </div>
+            
+            {/* Server Selector - positioned on the right */}
+            <div className="ml-auto">
+              <ServerSelector />
             </div>
           </div>
           
@@ -177,7 +183,7 @@ export default function ItemBrowser({ itemsData }) {
           >
             @Lbot
           </a>
-          -2026
+          {' '}-2026
         </p>
       </footer>
     </main>

@@ -8,6 +8,7 @@ import Image from 'next/image'
 import { enrichItemsWithPrice } from '@/utils/getPriceApi'
 import { useEffect } from 'react'
 import { ChevronLeft, ChevronRight, Loader2 } from 'lucide-react'
+import { useServerStore } from '@/stores/useServerStore' // Add this import
 
 export default function ItemGrid({ items, onSelectItem }) {
   const [imageErrors, setImageErrors] = useState(new Set())
@@ -15,10 +16,15 @@ export default function ItemGrid({ items, onSelectItem }) {
   const [isLoading, setIsLoading] = useState(false)
   const [loadingProgress, setLoadingProgress] = useState(0)
   
+  // Get server from Zustand store
+  const selectedServer = useServerStore((state) => state.selectedServer)
+  
+  console.log(itemsWithPrices)
+  
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 50
-
+  
   useEffect(() => {
     async function loadPrices() {
       if (items.length === 0) {
@@ -61,7 +67,7 @@ export default function ItemGrid({ items, onSelectItem }) {
     }
 
     loadPrices()
-  }, [items])
+  }, [items, selectedServer]) // Add selectedServer to dependency array
 
   // Pagination calculations
   const totalPages = Math.ceil(itemsWithPrices.length / itemsPerPage)
@@ -140,7 +146,12 @@ export default function ItemGrid({ items, onSelectItem }) {
       <div className="flex flex-col items-center justify-center py-20">
         <Loader2 className="w-12 h-12 text-blue-500 animate-spin mb-6" />
         <p className="text-lg text-slate-300 mb-2">Loading items and calculating profits...</p>
-        <p className="text-sm text-slate-400 mb-6">Processing {items.length} items</p>
+        <p className="text-sm text-slate-400 mb-4">Processing {items.length} items</p>
+        
+        {/* Show current server */}
+        <p className="text-xs text-slate-500 mb-6">
+          Server: <span className="text-blue-400 font-medium">{selectedServer.toUpperCase()}</span>
+        </p>
         
         {/* Progress Bar */}
         <div className="w-full max-w-md">
