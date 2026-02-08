@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -27,6 +28,84 @@ export default function FilterBar({
   onClearFilters,
   itemCount,
 }) {
+  // Local state for immediate UI updates
+  const [localSlotType, setLocalSlotType] = useState(selectedSlotType || 'ALL');
+  const [localName, setLocalName] = useState(selectedName);
+  const [localTier, setLocalTier] = useState(selectedTier || 'ALL');
+  const [localEnchantment, setLocalEnchantment] = useState(selectedEnchantment || 'ALL');
+
+  // Sync local state with props when they change externally (e.g., clear filters)
+  useEffect(() => {
+    setLocalSlotType(selectedSlotType || 'ALL');
+  }, [selectedSlotType]);
+
+  useEffect(() => {
+    setLocalName(selectedName);
+  }, [selectedName]);
+
+  useEffect(() => {
+    setLocalTier(selectedTier || 'ALL');
+  }, [selectedTier]);
+
+  useEffect(() => {
+    setLocalEnchantment(selectedEnchantment || 'ALL');
+  }, [selectedEnchantment]);
+
+  // Debounce effect for slot type
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const value = localSlotType === 'ALL' ? '' : localSlotType;
+      if (value !== selectedSlotType) {
+        onSlotTypeChange(value);
+      }
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [localSlotType]);
+
+  // Debounce effect for name search
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (localName !== selectedName) {
+        onNameChange(localName.toLowerCase());
+      }
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [localName]);
+
+  // Debounce effect for tier
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const value = localTier === 'ALL' ? '' : localTier;
+      if (value !== selectedTier) {
+        onTierChange(value);
+      }
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [localTier]);
+
+  // Debounce effect for enchantment
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const value = localEnchantment === 'ALL' ? '' : localEnchantment;
+      if (value !== selectedEnchantment) {
+        onEnchantmentChange(value);
+      }
+    }, 3500);
+
+    return () => clearTimeout(timer);
+  }, [localEnchantment]);
+
+  const handleClearFilters = () => {
+    setLocalSlotType('ALL');
+    setLocalName('');
+    setLocalTier('ALL');
+    setLocalEnchantment('ALL');
+    onClearFilters();
+  };
+
   return (
     <div className="mb-8">
       {/* Main Filter Bar */}
@@ -38,10 +117,8 @@ export default function FilterBar({
               Slot Type
             </label>
             <Select
-              value={selectedSlotType || 'ALL'}
-              onValueChange={(value) =>
-                onSlotTypeChange(value === 'ALL' ? '' : value)
-              }
+              value={localSlotType}
+              onValueChange={setLocalSlotType}
             >
               <SelectTrigger className="bg-slate-800 border-slate-600 text-white hover:border-slate-500 transition-colors h-11">
                 <SelectValue placeholder="Select Slot Type" />
@@ -69,10 +146,8 @@ export default function FilterBar({
               Tier
             </label>
             <Select
-              value={selectedTier || 'ALL'}
-              onValueChange={(value) =>
-                onTierChange(value === 'ALL' ? '' : value)
-              }
+              value={localTier}
+              onValueChange={setLocalTier}
             >
               <SelectTrigger className="bg-slate-800 border-slate-600 text-white hover:border-slate-500 transition-colors h-11">
                 <SelectValue placeholder="All Tiers" />
@@ -100,10 +175,8 @@ export default function FilterBar({
               Enchantment
             </label>
             <Select
-              value={selectedEnchantment || 'ALL'}
-              onValueChange={(value) =>
-                onEnchantmentChange(value === 'ALL' ? '' : value)
-              }
+              value={localEnchantment}
+              onValueChange={setLocalEnchantment}
             >
               <SelectTrigger className="bg-slate-800 border-slate-600 text-white hover:border-slate-500 transition-colors h-11">
                 <SelectValue placeholder="All Enchantments" />
@@ -135,13 +208,13 @@ export default function FilterBar({
               <Input
                 type="text"
                 placeholder="Search items..."
-                value={selectedName}
-                onChange={(e) => onNameChange(e.target.value.toLowerCase())}
+                value={localName}
+                onChange={(e) => setLocalName(e.target.value)}
                 className="bg-slate-800 border-slate-600 text-white placeholder:text-slate-500 hover:border-slate-500 focus:border-blue-500 transition-colors h-11 pr-10"
               />
-              {selectedName && (
+              {localName && (
                 <button
-                  onClick={() => onNameChange('')}
+                  onClick={() => setLocalName('')}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition-colors"
                 >
                   <X className="w-4 h-4" />
@@ -154,7 +227,7 @@ export default function FilterBar({
         {/* Clear Filters Button - Bottom Right */}
         <div className="flex justify-end mt-4 pt-4 border-t border-slate-700">
           <Button
-            onClick={onClearFilters}
+            onClick={handleClearFilters}
             variant="outline"
             size="sm"
             className="border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-500 bg-transparent transition-colors"

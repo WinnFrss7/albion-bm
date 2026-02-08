@@ -187,12 +187,12 @@ export default function ItemModal({ item, onClose }) {
                     </Button>
                   </div>
 
-                  {displayItem.craftingProfit ? (
+                  {displayItem.craftingProfit && displayItem.price && displayItem.craftingProfit.totalCraftCost ? (
                     <div className="space-y-2 sm:space-y-3">
                       <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
                         <span className="text-xs sm:text-sm text-slate-300">Item Sell Price</span>
                         <span className="text-sm sm:text-base font-bold text-white">
-                          {displayItem.price.toLocaleString()} 
+                          {displayItem.price?.toLocaleString()} 
                           <span className="text-xs text-slate-400 ml-1">silver</span>
                         </span>
                       </div>
@@ -200,7 +200,7 @@ export default function ItemModal({ item, onClose }) {
                       <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
                         <span className="text-xs sm:text-sm text-slate-300">Total Craft Cost</span>
                         <span className="text-sm sm:text-base font-bold text-red-400">
-                          -{displayItem.craftingProfit.totalCraftCost.toLocaleString()}
+                          -{displayItem.craftingProfit.totalCraftCost?.toLocaleString()}
                           <span className="text-xs text-slate-400 ml-1">silver</span>
                         </span>
                       </div>
@@ -208,7 +208,7 @@ export default function ItemModal({ item, onClose }) {
                       <div className="flex justify-between items-center py-2 border-b border-slate-700/50">
                         <span className="text-xs sm:text-sm text-slate-300">Market Tax (10%)</span>
                         <span className="text-sm sm:text-base font-bold text-red-400">
-                          -{displayItem.craftingProfit.marketTax.toLocaleString()}
+                          -{displayItem.craftingProfit.marketTax?.toLocaleString()}
                           <span className="text-xs text-slate-400 ml-1">silver</span>
                         </span>
                       </div>
