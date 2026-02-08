@@ -8,7 +8,13 @@ const _geistMono = Geist_Mono({ subsets: ['latin'] })
 export const metadata = {
   title: 'AO-Black Market',
   description: 'Get Profit With AO Black Market By Lbot',
+  icons: {
+    icon: '/favicon.ico',  
+    shortcut: '/favicon.png',  
+    apple: '/favicon.png',      
+  },
 }
+
 
 export default function RootLayout({
   children,

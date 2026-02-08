@@ -79,7 +79,7 @@ async function fetchPrices(itemIds, location, useQuality = false) {
   const baseUrl = "https://europe.albion-online-data.com/api/v2/stats/history";
   const itemsParam = itemIds.join(",");
   const url = `${baseUrl}/${itemsParam}?locations=${location}${quality}&time-scale=24`;
-console.log(url)
+
   const res = await fetch(url);
   return res.json();
 }
