@@ -26,7 +26,6 @@ export async function enrichItemsWithPrice(items, returnRate = 0.248, serverOver
   // For items (from Black Market with quality 2)
   // API returns array where each element has quality and data properties
   itemPrices.forEach(p => {
-    console.log(p);
     if (p.quality === 2) {
       priceMap[p.item_id] = calculateAveragePrice(p.data);
     }
@@ -36,7 +35,6 @@ export async function enrichItemsWithPrice(items, returnRate = 0.248, serverOver
   // Group by item_id and select quality 1 or 2 (prefer quality 1 as it's cheaper)
   const materialsByItemId = {};
   materialPrices.forEach(p => {
-    console.log(p);
     if (!materialsByItemId[p.item_id]) {
       materialsByItemId[p.item_id] = [];
     }
@@ -63,8 +61,6 @@ export async function enrichItemsWithPrice(items, returnRate = 0.248, serverOver
     console.warn(`No quality 1 or 2 data for material: ${itemId}`);
   });
   
-  console.log('price map');
-  console.log(priceMap);
   
   return items.map(item => {
     const resources = normalizeToArray(item.CraftingRequirements?.craftresource);
@@ -117,14 +113,12 @@ async function fetchPrices(itemIds, location, useQuality = false, server = 'euro
   const baseUrl = `https://${server}.albion-online-data.com/api/v2/stats/history`;
   const itemsParam = itemIds.join(",");
   const url = `${baseUrl}/${itemsParam}?locations=${location}${quality}&time-scale=6`;
-  
-  console.log(url);
+
   const res = await fetch(url);
   return res.json();
 }
 
 function calculateAveragePrice(historyData) {
-  console.log(historyData);
   if (!historyData || historyData.length === 0) return null;
   
   const lastFive = historyData.slice(-3);

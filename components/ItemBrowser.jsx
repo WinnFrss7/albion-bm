@@ -86,37 +86,42 @@ export default function ItemBrowser({ itemsData }) {
     <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800 p-4 md:p-8">
       <div className="mx-auto max-w-7xl">
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-3">
-            <Image
-              src="/favicon.png"
-              alt="Albion Black Market Logo"
-              width={64}
-              height={64}
-              className="rounded-lg"
-              priority
-            />
-            <div className="flex-1">
-              <h1 className="text-4xl font-bold text-white mb-2">Albion Black Market</h1>
-              <p className="text-slate-400">
-                Black Market Profit Finder Tool Powered By{' '}
-                <a
-                  href="https://github.com/WinnFrss7"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
-                >
-                  @Lbot
-                </a>
-              </p>
+          {/* Mobile: Stack everything vertically, Desktop: Horizontal layout */}
+          <div className="flex flex-col md:flex-row md:items-center gap-4 mb-3">
+            <div className="flex items-center gap-3 md:gap-4 flex-1 min-w-0">
+              <Image
+                src="/favicon.png"
+                alt="Albion Black Market Logo"
+                width={64}
+                height={64}
+                className="rounded-lg flex-shrink-0 w-12 h-12 md:w-16 md:h-16"
+                priority
+              />
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl md:text-4xl font-bold text-white mb-1 md:mb-2 truncate">
+                  Albion Black Market
+                </h1>
+                <p className="text-xs md:text-base text-slate-400 line-clamp-2">
+                  Black Market Profit Finder Tool Powered By{' '}
+                  <a
+                    href="https://github.com/WinnFrss7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 transition-colors font-medium"
+                  >
+                    @Lbot
+                  </a>
+                </p>
+              </div>
             </div>
             
-            {/* Server Selector - positioned on the right */}
-            <div className="ml-auto">
+            {/* Server Selector - full width on mobile, right side on desktop */}
+            <div className="w-full md:w-auto md:ml-auto flex-shrink-0">
               <ServerSelector />
             </div>
           </div>
           
-          <div className="ml-20 flex items-center gap-2 text-sm">
+          <div className="md:ml-20 flex flex-wrap items-center gap-2 text-xs md:text-sm">
             <span className="text-slate-400">More Tools:</span>
             <a
               href="https://albion-refine.vercel.app"

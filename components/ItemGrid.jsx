@@ -19,7 +19,6 @@ export default function ItemGrid({ items, onSelectItem }) {
   // Get server from Zustand store
   const selectedServer = useServerStore((state) => state.selectedServer)
   
-  console.log(itemsWithPrices)
   
   // Pagination
   const [currentPage, setCurrentPage] = useState(1)
